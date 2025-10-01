@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Cardápio – {{ store.name }}{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Cardápio – {{ store.name }}</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% for item in menu_items %}
+  <div class="border rounded-lg p-4 bg-white">
+    <h2 class="font-semibold">{{ item.name }}</h2>
+    <p class="text-sm text-gray-600">{{ item.description }}</p>
+    <div class="mt-2 flex items-center justify-between">
+      {% if item.price_slice_cents %}
+        <span class="text-lg font-bold">R$ {{ (item.price_slice_cents/100)|round(2) }}</span>
+        <button
+          class="px-3 py-1 rounded bg-black text-white"
+          hx-post="/public/orders/add"
+          hx-vals='{"store_id":"{{ store.id }}","menu_item_id":"{{ item.id }}","type":"SLICE"}'
+          hx-target="#cart"
+          hx-swap="innerHTML">
+          Adicionar fatia
+        </button>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<h3 class="text-xl font-semibold mt-6 mb-2">Carrinho</h3>
+<div id="cart" class="bg-white border rounded p-4">
+  <!-- será renderizado via HTMX -->
+  <p class="text-gray-500">Seu carrinho está vazio.</p>
+</div>
+{% endblock %}
