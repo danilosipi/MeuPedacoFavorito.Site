@@ -1,9 +1,0 @@
-fastapi
-uvicorn[standard]
-pydantic-settings
-SQLAlchemy>=2.0
-asyncpg
-alembic
-redis>=5
-jinja2
-python-multipart
