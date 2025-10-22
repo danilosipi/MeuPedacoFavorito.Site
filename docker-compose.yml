@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: mpf_postgres
+    environment:
+      POSTGRES_USER: db_UserMPF
+      POSTGRES_PASSWORD: db_passMpf2025
+      POSTGRES_DB: meupedacofavorito_db
+    ports: ["5432:5432"]
+    volumes:
+      - mpf_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U db_UserMPF -d meupedacofavorito_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7
+    container_name: mpf_redis
+    ports: ["6379:6379"]
+
+  backend:
+    build: ./backend
+    container_name: mpf_backend
+    env_file: ./backend/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports: ["8000:8000"]
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build: ./frontend
+    container_name: mpf_frontend
+    env_file: ./frontend/.env
+    depends_on:
+      - backend
+    ports: ["3000:3000"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    stdin_open: true
+    tty: true
+
+volumes:
+  mpf_postgres_data:

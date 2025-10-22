@@ -1,0 +1,25 @@
+{
+  "name": "mpf-frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000"
+  },
+  "dependencies": {
+    "next": "15.0.0-rc.0",
+    "react": "19.0.0-rc-f994737d14-20240522",
+    "react-dom": "19.0.0-rc-f994737d14-20240522",
+    "axios": "^1.7.4",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/node": "^20.14.2",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.6.2",
+    "tailwindcss": "^3.4.12",
+    "postcss": "^8.4.44",
+    "autoprefixer": "^10.4.19"
+  }
+}
